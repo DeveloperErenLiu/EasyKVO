@@ -155,7 +155,8 @@ static NSString * lxz_setterForGetter(SEL getter) {
     objc_registerClassPair(kvoClass);
     
     // 3.
-    const char * types = NSStringFromSelector(@selector(class)).UTF8String;
+    Method method = class_getInstanceMethod(object_getClass(self), @selector(class));
+    const char *types = method_getTypeEncoding(method);
     class_addMethod(kvoClass, @selector(class), (IMP)lxz_kvoClass, types);
     
     return kvoClass;
