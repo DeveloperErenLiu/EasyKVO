@@ -103,15 +103,18 @@ static void lxz_kvoSetter(id self, SEL selector, id value) {
 - (BOOL)lxz_hasMethodWithKey:(SEL)key {
     NSString *setterName = NSStringFromSelector(key);
     unsigned int count;
+    BOOL ret = NO;
     Method *methodList = class_copyMethodList(object_getClass(self), &count);
     for (NSInteger i = 0; i < count; i++) {
         Method method = methodList[i];
         NSString *methodName = NSStringFromSelector(method_getName(method));
         if ([methodName isEqualToString:setterName]) {
-            return YES;
+            ret = YES;
+            break;
         }
     }
-    return NO;
+    free(methodList);
+    return ret;
 }
 
 static NSString * lxz_getterForSetter(SEL setter) {

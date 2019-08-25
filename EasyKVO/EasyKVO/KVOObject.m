@@ -32,6 +32,7 @@
         NSString *methodName = NSStringFromSelector(method_getName(method));
         NSLog(@"method Name = %@\n", methodName);
     }
+    free(methodList);
     
     return @"";
 }
