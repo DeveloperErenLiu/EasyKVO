@@ -61,12 +61,14 @@ static NSString *lxz_KVOClassPrefix = @"lxz_KVONotifying_";
 - (void)lxz_removeObserver:(NSObject *)observer
           originalSelector:(SEL)originalSelector {
     NSMutableArray <KVOObserverItem *>* observers = objc_getAssociatedObject(self, lxz_KVOObserverAssociatedKey);
+    NSMutableArray <KVOObserverItem *>* toRemove = [NSMutableArray array];
     [observers enumerateObjectsUsingBlock:^(KVOObserverItem * _Nonnull mapTable, NSUInteger idx, BOOL * _Nonnull stop) {
         SEL selector = NSSelectorFromString(mapTable.key);
         if (mapTable.observer == observer && selector == originalSelector) {
-            [observers removeObject:mapTable];
+            [toRemove addObject:mapTable];
         }
     }];
+    [observers removeObjectsInArray:toRemove];
 }
 
 #pragma mark - ----- Private Method Or Funcation ------
